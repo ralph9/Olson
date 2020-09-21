@@ -1,0 +1,56 @@
+body{
+	font-family: sans-serif;
+	background-color: #34495e;
+	color: white;
+}
+
+div#locationsDiv{
+	display: inline-block;
+	margin: 100px auto;
+	text-align: center;
+	width: 100%;
+	font-size: 18px;
+	letter-spacing: 1px;
+	margin-top: 20px;
+}
+
+input{
+	border: 2px solid white;
+	padding: 15px;
+}
+
+#map {
+	display: block;
+	margin: 100px auto;
+    height: 400px;
+    width: 700px;
+    text-align: center;
+    margin-top: 0;
+      }
+
+button#buttonVisibility{
+	padding: 12px;
+	border: 1px solid black;
+	border-radius: 3px;
+}
+
+button#buttonVisibility:hover{
+	padding: 11px;
+	border: 2px solid black;
+	background-color: #bdc3c7;
+}
+
+div#elevation_chart{
+	text-align: center;
+	width: 800px;
+	height: 200px;
+	display: block;
+	margin: 0 auto;
+	font-size: 12px;
+}
+
+div#altitudeInformation{
+	margin: -30px auto;
+	display: block;
+	text-align: center;
+}

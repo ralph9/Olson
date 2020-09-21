@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Se ve?</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://www.google.com/jsapi"></script>
+	<script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1sJvxxEwh7BU40WeRf6jPDKdBoyi0gQA&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+</head>
+<body>
+<div id="locationsDiv">
+<h1>Visor</h1>
+<br />
+<label>Initial location</label>
+<br />
+<input type="text" id="initialLat"></input>
+<br />
+<br />
+<input type="text" id="initialLong"></input>
+<br />
+<br />
+<br />
+<label>Place you want to see</label>
+<br />
+<input type="text" id="finalLat"></input>
+<br />
+<br />
+<input type="text" id="finalLong"></input>
+<br />
+<br />
+<button id="buttonVisibility">See visibility</button>
+</div>
+ <div id="map"></div>
+
+<h3 style="text-align: center;">Altitude chart</h3>
+ <div id="elevation_chart">
+ </div>
+<div id="altitudeInformation">
+	<h1 id="differenceInElevation"></h1>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="prisma.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.8.2/countUp.min.js'></script>
+</body>
+</html>
