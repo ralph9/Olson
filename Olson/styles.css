@@ -1,7 +1,28 @@
+@font-face {
+    font-family: 'Butler';
+    src: url('butler_regular-webfont.woff2') format('woff2'),
+         url('butler_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
 body{
 	font-family: sans-serif;
-	background-color: #34495e;
-	color: white;
+	background-color: #d2dae2;
+	color: black;
+}
+
+h1#mainTitle{
+	display: block;
+	margin: 0 auto;
+	width: 400px;
+	font-family: 'Butler';
+	font-size: 60px;
+	letter-spacing: 24px;
+	border-bottom: 2px solid black;
+	padding: 10px;
 }
 
 div#locationsDiv{
@@ -11,7 +32,6 @@ div#locationsDiv{
 	width: 100%;
 	font-size: 18px;
 	letter-spacing: 1px;
-	margin-top: 20px;
 }
 
 input{
@@ -26,12 +46,19 @@ input{
     width: 700px;
     text-align: center;
     margin-top: 0;
-      }
+    padding: 20px;
+    border: 3px solid rgba(0,0,0,0);
+   }
+
+#map:hover{
+	border: 3px solid black;
+}
 
 button#buttonVisibility{
 	padding: 12px;
 	border: 1px solid black;
 	border-radius: 3px;
+	clear: left;
 }
 
 button#buttonVisibility:hover{
@@ -53,4 +80,39 @@ div#altitudeInformation{
 	margin: -30px auto;
 	display: block;
 	text-align: center;
+	font-family: 'Butler';
+	letter-spacing: 6px;
 }
+
+span#initialCoords{
+	display: none;
+}
+
+span#finalCoords{
+	display: none;
+}
+
+h2#altChart{
+	font-family: 'Butler';
+	letter-spacing: 6px;
+}
+
+
+.gm-style > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(3) > div:nth-child(2) > img:nth-child(1){
+	src
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

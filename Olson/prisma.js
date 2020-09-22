@@ -7,7 +7,7 @@
 
 //TODO: 
 //implement drag marker that resets to new location, fix polyline and altitude graph accordingly DONE
-//UI to choose between manual input of coordinates or markers, general revamp and improvements
+//UI to choose between manual input of coordinates or markers, general revamp and improvements KINDA DONE
 //altitude difference with animated number countup/down DONE
 //post in github pages
 //Optional: weather visibility on current day or later on
@@ -20,13 +20,13 @@ buttonVisibility.addEventListener("click", parseLocationFromInputs, false);
 var listOfMarkers = [];
 var polylineBetweenCoordinates = null;
 let map;
-
+var secondSet = false;
 
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 43.553893, lng: -6.599182 },
-    zoom: 12
+    zoom: 12,
   });
 
     map.addListener('click', function(mapsMouseEvent) {
@@ -36,7 +36,8 @@ function initMap() {
           var coordsFormatted = {lat: parseFloat(listaDeCoords[0].substring(1))};
           coordsFormatted.lng = parseFloat(listaDeCoords[1].substring(-1));
           console.log(coordsFormatted);
-          var newMarker = new google.maps.Marker({position: coordsFormatted, map:map, draggable: true, animation: google.maps.Animation.DROP});
+          var iconForMarker = "iconMarker.png";
+          var newMarker = new google.maps.Marker({position: coordsFormatted, map:map, icon: iconForMarker, draggable: true, animation: google.maps.Animation.DROP});
           google.maps.event.addListener(newMarker, 'dragend', function() {
             console.log("dragging is end");
             console.log(this.position.toUrlValue(6));
@@ -47,7 +48,6 @@ function initMap() {
           //console.log("Position: " + newMarker.getPosition());
         });
 }
-
 
 
 function updateElevationAndLineOnDrag(){
@@ -105,13 +105,14 @@ function parseLocationFromInputs(){
     mapTypeId: "terrain"
   });
 
-
-	var initialMarker = new google.maps.Marker({position: initialCoordinates, map: map, draggable: true, animation: google.maps.Animation.DROP});
+	var imageForMarker = "first.png";
+	var initialMarker = new google.maps.Marker({position: initialCoordinates, icon: imageForMarker, map: map, draggable: true, animation: google.maps.Animation.DROP});
 
 
 	var finalCoordinates = {lat: parseFloat(latitudeEnd), lng: parseFloat(longitudeEnd)};
 
-	var finalMarker = new google.maps.Marker({position: finalCoordinates, map:map, draggable: true, animation: google.maps.Animation.DROP});
+	var finalMarker = new google.maps.Marker({position: finalCoordinates, icon: imageForMarker, map:map, draggable: true, animation: google.maps.Animation.DROP});
+
 
   var pathOfVisibility = [initialCoordinates,finalCoordinates];
 
@@ -119,14 +120,11 @@ function parseLocationFromInputs(){
 
 }
 
-
-
-
   function getElevationAndDrawLine(pathOfVisibility){
   if (polylineBetweenCoordinates != null){
   polylineBetweenCoordinates.setMap(null);
 }
-
+	pathOfVisibility = pathOfVisibility.reverse();
   const elevator = new google.maps.ElevationService(); // Draw the path, using the Visualization API and the Elevation service.
 
   elevator.getElevationAlongPath(
@@ -139,7 +137,7 @@ function parseLocationFromInputs(){
 	polylineBetweenCoordinates = new google.maps.Polyline({
     path: pathOfVisibility,
     geodesic: true,
-    strokeColor: '#FF0000',
+    strokeColor: '#130f40',
     strokeOpacity: 1.0,
     strokeWeight: 2
   });
@@ -149,11 +147,6 @@ polylineBetweenCoordinates.setMap(map);
 console.log("changed it ");
 requestElevation();
 }
-
-
-
-
-
 
 
 //AJAX REQUEST FOR ELEVATION
@@ -168,6 +161,7 @@ function requestElevation(){$.ajax({
 
 
 function plotElevation(elevations, status) {
+		$("#altChart").text("Altitude chart");
         animateElevationDifference(elevations[1], elevations[elevations.length-1]);
         const chartDiv = document.getElementById("elevation_chart");
 
@@ -194,10 +188,11 @@ function plotElevation(elevations, status) {
         chart.draw(data, {
           height: 150,
           legend: "none",
-          titleY: "Elevation (m)"
+          titleY: "Elevation (m)",
+          colors: "#82ccdd"
         });
-      }
 
+      }
 
 
 function animateElevationDifference(firstElevation, secondElevation){
@@ -206,10 +201,11 @@ function animateElevationDifference(firstElevation, secondElevation){
   $("h3#secondElevation").text(Math.trunc(secondElevation.elevation));
   var difference = Math.trunc(firstElevation.elevation) - Math.trunc(secondElevation.elevation);
   $("h1#differenceInElevation").text(difference);
+
   if(difference > 0){
-    $("h1#differenceInElevation").css("color", "#81ecec");
+    $("h1#differenceInElevation").css("color", "#485460");
   }else{
-    $("h1#differenceInElevation").css("color", "#ffeaa7");
+    $("h1#differenceInElevation").css("color", "#ffa801");
   }
 
   var options = {

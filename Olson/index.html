@@ -12,7 +12,8 @@
 </head>
 <body>
 <div id="locationsDiv">
-<h1>Visor</h1>
+	<h1 id="mainTitle" >OLSON</h1>
+<span id="initialCoords">
 <br />
 <label>Initial location</label>
 <br />
@@ -23,7 +24,9 @@
 <br />
 <br />
 <br />
-<label>Place you want to see</label>
+</span>
+<span id="finalCoords">
+	<label>Place you want to see</label>
 <br />
 <input type="text" id="finalLat"></input>
 <br />
@@ -32,10 +35,11 @@
 <br />
 <br />
 <button id="buttonVisibility">See visibility</button>
+</span>
 </div>
  <div id="map"></div>
 
-<h3 style="text-align: center;">Altitude chart</h3>
+<h2 id="altChart" style="text-align: center;"></h2>
  <div id="elevation_chart">
  </div>
 <div id="altitudeInformation">
