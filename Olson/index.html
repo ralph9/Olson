@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Se ve?</title>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+	<title>OLSON meter</title>
 	<link rel="stylesheet" type="text/css" href="styles.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://www.google.com/jsapi"></script>
-	<script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1sJvxxEwh7BU40WeRf6jPDKdBoyi0gQA&callback=initMap&libraries=&v=weekly"
-      defer
-    ></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1sJvxxEwh7BU40WeRf6jPDKdBoyi0gQA&callback=initMap&libraries=geometry"></script>
 </head>
 <body>
 <div id="locationsDiv">
@@ -37,8 +36,14 @@
 <button id="buttonVisibility">See visibility</button>
 </span>
 </div>
- <div id="map"></div>
-
+ <div id="map">
+ </div>
+ <div id="weatherInformation">
+	<h3 id="nameLocationWeather"></h3>
+	<h3 id="weatherTitle"></h3>
+	<h3 id="temperatureText"></h3>
+</div>
+<h1 id="distanceText"></h1>
 <h2 id="altChart" style="text-align: center;"></h2>
  <div id="elevation_chart">
  </div>

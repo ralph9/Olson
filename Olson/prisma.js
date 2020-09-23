@@ -9,8 +9,8 @@
 //implement drag marker that resets to new location, fix polyline and altitude graph accordingly DONE
 //UI to choose between manual input of coordinates or markers, general revamp and improvements KINDA DONE
 //altitude difference with animated number countup/down DONE
-//post in github pages
-//Optional: weather visibility on current day or later on
+//post in github pages NOT GONNA DO IT
+//Optional: weather visibility on current day or later on KINDA DONE
 
 
 //GLOBAL VARIABLES AND CONSTANTS
@@ -20,32 +20,25 @@ buttonVisibility.addEventListener("click", parseLocationFromInputs, false);
 var listOfMarkers = [];
 var polylineBetweenCoordinates = null;
 let map;
-var secondSet = false;
 
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 43.553893, lng: -6.599182 },
     zoom: 12,
+    mapTypeId: "terrain"
   });
 
     map.addListener('click', function(mapsMouseEvent) {
-          //alert(mapsMouseEvent.latLng.toString());
           var listaDeCoords = mapsMouseEvent.latLng.toString().split(",");
-          //alert(listaDeCoords[0]);
           var coordsFormatted = {lat: parseFloat(listaDeCoords[0].substring(1))};
           coordsFormatted.lng = parseFloat(listaDeCoords[1].substring(-1));
-          console.log(coordsFormatted);
           var iconForMarker = "iconMarker.png";
           var newMarker = new google.maps.Marker({position: coordsFormatted, map:map, icon: iconForMarker, draggable: true, animation: google.maps.Animation.DROP});
           google.maps.event.addListener(newMarker, 'dragend', function() {
-            console.log("dragging is end");
-            console.log(this.position.toUrlValue(6));
             updateElevationAndLineOnDrag();
           });
           addNewMarker(newMarker);
-          //console.log(listOfMarkers);
-          //console.log("Position: " + newMarker.getPosition());
         });
 }
 
@@ -57,8 +50,6 @@ function updateElevationAndLineOnDrag(){
     var pathToFollow = [listOfMarkers[0].position,  listOfMarkers[1].position]
     getElevationAndDrawLine(pathToFollow);
   }
-  console.log("mrks");
-  console.log(listOfMarkers);
 }
 
 
@@ -66,14 +57,11 @@ function updateElevationAndLineOnDrag(){
 
 function addNewMarker(markerToAdd){
   if (listOfMarkers.includes(markerToAdd) || listOfMarkers.length < 2){
-    //listOfPositions.unshift(markerToAdd.getPosition());
     listOfMarkers.unshift(markerToAdd);
-    console.log("new marker added, no other changes");
+    //∫console.log("new marker added, no other changes");
   }
   else{
-    console.log("removed element from marker array");
-    //listOfPositions.splice(-1,1);
-    //listOfPositions.unshift(markerToAdd.getPosition());
+    //console.log("removed element from marker array");
     listOfMarkers[listOfMarkers.length-1].setMap(null);
     listOfMarkers.splice(-1,1);
     listOfMarkers.unshift(markerToAdd);
@@ -82,12 +70,10 @@ function addNewMarker(markerToAdd){
     if(listOfMarkers.length == 2){
         var pathToFollow = [listOfMarkers[0].position,  listOfMarkers[1].position]
         getElevationAndDrawLine(pathToFollow);
+        getDistanceAndAnimate();
+        getWeatherForCoordinates();
     }
 }
-
-
-
-
 
 
 function parseLocationFromInputs(){
@@ -95,7 +81,6 @@ function parseLocationFromInputs(){
 	var longitudeInit = document.getElementById("initialLong").value;
 	var latitudeEnd = document.getElementById("finalLat").value;
 	var longitudeEnd = document.getElementById("finalLong").value;
-
 
 	var initialCoordinates = {lat: parseFloat(latitudeInit), lng: parseFloat(longitudeInit)};
 
@@ -117,7 +102,8 @@ function parseLocationFromInputs(){
   var pathOfVisibility = [initialCoordinates,finalCoordinates];
 
   getElevationAndDrawLine(pathOfVisibility);
-
+  getDistanceAndAnimate();
+  getWeatherForCoordinates();
 }
 
   function getElevationAndDrawLine(pathOfVisibility){
@@ -143,9 +129,14 @@ function parseLocationFromInputs(){
   });
 
 polylineBetweenCoordinates.setMap(map);
-//currentPolyline = pathBetweenTwoCoordinates;
-console.log("changed it ");
 requestElevation();
+}
+
+function getDistanceAndAnimate(){
+  var positionFirstMarker = listOfMarkers[0].getPosition();
+var positionSecondMarker = listOfMarkers[1].getPosition();
+var distance = google.maps.geometry.spherical.computeDistanceBetween(positionFirstMarker, positionSecondMarker);
+animateDistance(distance);
 }
 
 
@@ -154,7 +145,8 @@ function requestElevation(){$.ajax({
   url: "https://maps.googleapis.com/maps/api/elevation/json?locations=39.7391536,-104.9847034&key=AIzaSyA1sJvxxEwh7BU40WeRf6jPDKdBoyi0gQA",
   context: document.body
 }).done(function(data) {
-  console.log(data);
+  //console.log(data);
+  return;
 });
 }
 
@@ -191,12 +183,10 @@ function plotElevation(elevations, status) {
           titleY: "Elevation (m)",
           colors: "#82ccdd"
         });
-
       }
 
 
 function animateElevationDifference(firstElevation, secondElevation){
-  console.log(firstElevation);
   $("h3#firstElevation").text(Math.trunc(firstElevation.elevation));
   $("h3#secondElevation").text(Math.trunc(secondElevation.elevation));
   var difference = Math.trunc(firstElevation.elevation) - Math.trunc(secondElevation.elevation);
@@ -216,16 +206,55 @@ function animateElevationDifference(firstElevation, secondElevation){
     suffix: " meters difference"
   };
 
-
   var counterOfDifference = new CountUp("differenceInElevation", 0, $("#differenceInElevation").text(), 0, 2, options);
   if(!counterOfDifference.error){
     counterOfDifference.start();
   }
+}
 
 
+function animateDistance(distance){
+  $("h1#distanceText").text(distance);
+
+  var options = {
+    useEasing: true,
+    useGrouping: true,
+    separator: ".",
+    decimal: ",",
+    prefix: "Distance: ",
+    suffix: " metres"
+  };
+
+
+  var counterOfDifference = new CountUp("distanceText", 0, $("#distanceText").text(), 0, 1, options);
+  if(!counterOfDifference.error){
+    counterOfDifference.start();
+  }
+}
+
+
+function getWeatherForCoordinates(){
+  var latForWeather = Math.round(listOfMarkers[0].getPosition().lat() * 100) / 100;
+  var longForWeather = Math.round(listOfMarkers[0].getPosition().lng() *100) /100;
+  var urlForCall = "http://api.openweathermap.org/data/2.5/weather?lat=" + latForWeather + "&lon="+ longForWeather + "&units=metric&appid=2d5819ca15d180ff87d29bf158a205b8";
+  console.log(urlForCall);
+  $.ajax({
+  url: urlForCall,
+  context: document.body
+}).done(function(data) {
+  console.log(data);
+  displayWeatherInformation(data);
+});
+}
+
+function  displayWeatherInformation(data){
+  $("h3#nameLocationWeather").text(data.name);
+  $("h3#weatherTitle").text(data.weather[0].description);
+  $("h3#temperatureText").text(data.main.temp + "°C");
 }
 
 
 
- 
+
+ //api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={2d5819ca15d180ff87d29bf158a205b8}
 

@@ -23,6 +23,7 @@ h1#mainTitle{
 	letter-spacing: 24px;
 	border-bottom: 2px solid black;
 	padding: 10px;
+	margin-top: -80px;
 }
 
 div#locationsDiv{
@@ -97,14 +98,23 @@ h2#altChart{
 	letter-spacing: 6px;
 }
 
-
-.gm-style > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(3) > div:nth-child(2) > img:nth-child(1){
-	src
+h1#distanceText{
+	display: block;
+	margin: 0 auto;
+	width: 60%;
+	text-align: center;
+	font-family: 'Butler';
+	letter-spacing: 5px;
+	margin-bottom: 50px;
 }
 
-
-
-
+div#weatherInformation{
+	display: block;
+	margin: 80px auto;
+	text-align: center;
+	font-family: 'Butler';
+	letter-spacing: 4px;
+}
 
 
 
